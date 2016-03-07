@@ -84,7 +84,7 @@ namespace EasySpider
 				if (nodesCollection != null) {
 					nodesCollection.ToList ().ForEach (allNodes [i].Add);
 					allNodes [i].ForEach (n => res [i] += ContentSelector != null ? (ContentSelector (n.InnerText) + "\n") : (n.InnerText + "\n"));
-					contentStandarlize (res [i]);
+					res [i] = contentStandarlize (res [i]);
 				}
 			}
 			return res;

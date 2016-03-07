@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Linq;
 
 namespace EasySpider
 {
@@ -21,10 +22,11 @@ namespace EasySpider
 
 		public void CollectData (string url, int depth, string html, string[] content)
 		{
-			for (int i = 0; i < KeywordsFilters.Length; i++) {
-				if (KeywordsFilters != null) {
-					if (string.IsNullOrEmpty (KeywordsFilters [i]) || content [i] == null || !content [i].Contains (KeywordsFilters [i]))
-						return;
+			if (content.All (c => c == null))
+				return;
+			if (KeywordsFilters.Any (k => !string.IsNullOrEmpty (k))) {
+				if (content.All (c => c != null && !KeywordsFilters.Any (c.Contains))) {
+					return;
 				}
 			}
 			dataBase.Add (url, new URLInfo{ Depth = depth, HTMLContent = html, SlelectedContent = content });
