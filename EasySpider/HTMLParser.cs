@@ -20,7 +20,7 @@ namespace EasySpider
 
 		public string[] XPathSelectors{ get; set; }
 
-		public Func<string,string> ContentHandler{ get; set; }
+		public Func<string,string> ContentSelector{ get; set; }
 
 		public event LinksParsedHandler linksParsedEvent;
 
@@ -83,7 +83,7 @@ namespace EasySpider
 				var nodesCollection = htmlDocument.DocumentNode.SelectNodes (XPathSelectors [i]);
 				if (nodesCollection != null) {
 					nodesCollection.ToList ().ForEach (allNodes [i].Add);
-					allNodes [i].ForEach (n => res [i] += ContentHandler != null ? (ContentHandler (n.InnerText) + "\n") : (n.InnerText + "\n"));
+					allNodes [i].ForEach (n => res [i] += ContentSelector != null ? (ContentSelector (n.InnerText) + "\n") : (n.InnerText + "\n"));
 					contentStandarlize (res [i]);
 				}
 			}

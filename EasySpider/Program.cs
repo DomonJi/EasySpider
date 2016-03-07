@@ -9,13 +9,13 @@ namespace EasySpider
 	{
 		public static void Main (string[] args)
 		{
-			new Spider ("https://www.zhihu.com/question/20899988") {
+			new Spider ("https://www.zhihu.com/topic/19563107") {
 				ThreadsNum = 4,
 				Downloader = new HTMLDownloader {
 					TimeOut = 10000,
 				},
 				UrlsMng = new UrlsManager {
-					CrawDepth = 4,
+					CrawDepth = 5,
 				},
 				Parser = new HTMLParser {
 					Keywords = new []{ "" },
@@ -32,6 +32,9 @@ namespace EasySpider
 						"//*[@class=\"zm-item-title zm-editable-content\"]",
 						"//*[@class=\"zm-editable-content clearfix\"]"
 					},
+				},
+				DataHdler = new DataHandler {
+					KeywordsFilters = new []{ "考研" },
 				}
 			}.Crawl ();
 		}

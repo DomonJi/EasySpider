@@ -18,7 +18,7 @@ namespace EasySpider
 		public event NewURLAddedHandler newURLAddedEvent;
 
 		Queue<KeyValuePair<string,int>> newUrlQueue = new Queue<KeyValuePair<string,int>> ();
-		List<string> visitedURLs = new List<string> ();
+		readonly List<string> visitedURLs = new List<string> ();
 
 		public bool HasNewUrl{ get { return newUrlQueue.Count > 0; } }
 

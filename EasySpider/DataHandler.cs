@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace EasySpider
 {
@@ -8,24 +9,26 @@ namespace EasySpider
 	{
 		readonly Dictionary<string,URLInfo> dataBase = new Dictionary<string, URLInfo> ();
 
-		public void Output ()
+		public string[] KeywordsFilters { get; set; }
+
+		public void Output (Object file)
 		{
+			KeyValuePair<string,string> kvp = (KeyValuePair<string,string>)file;
+			StreamWriter sw = new StreamWriter (kvp.Key, true, System.Text.Encoding.Unicode);
+			sw.Write (kvp.Value);
+			sw.Close ();
 		}
 
 		public void CollectData (string url, int depth, string html, string[] content)
 		{
-			dataBase.Add (url, new URLInfo{ Depth = depth, HTMLContent = html, FilteredContent = content });
-			var res = "";
-			res = url + "\n" + depth;
-			for (int i = 0; i < content.Length; i++) {
-				res += content [i] + "\n";
+			for (int i = 0; i < KeywordsFilters.Length; i++) {
+				if (KeywordsFilters != null) {
+					if (string.IsNullOrEmpty (KeywordsFilters [i]) || content [i] == null || !content [i].Contains (KeywordsFilters [i]))
+						return;
+				}
 			}
-			//Console.WriteLine (res);
-			if (content [0] != null) {
-				StreamWriter sw = new StreamWriter (content [0].Replace ("\n", "") + ".txt", true, System.Text.Encoding.Unicode);
-				sw.Write (content [0] + "\n" + content [1]);
-				sw.Close ();
-			}
+			dataBase.Add (url, new URLInfo{ Depth = depth, HTMLContent = html, SlelectedContent = content });
+			new Thread (Output).Start (new KeyValuePair<string,string> (content [0].Replace ("\n", "") + ".txt", content [0] + "\n" + content [1]));
 		}
 
 	}
@@ -36,7 +39,7 @@ namespace EasySpider
 
 		public string HTMLContent{ get; set; }
 
-		public string[] FilteredContent{ get; set; }
+		public string[] SlelectedContent{ get; set; }
 	}
 }
 
