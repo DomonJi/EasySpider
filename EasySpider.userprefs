@@ -1,13 +1,13 @@
 ﻿<Properties StartupItem="EasySpider/EasySpider.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="EasySpider/Spider.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EasySpider/HTMLDownloader.cs">
     <Files>
-      <File FileName="EasySpider/Program.cs" Line="33" Column="15" />
-      <File FileName="EasySpider/HTMLParser.cs" Line="33" Column="40" />
-      <File FileName="EasySpider/Spider.cs" Line="59" Column="6" />
-      <File FileName="EasySpider/HTMLDownloader.cs" Line="36" Column="1" />
-      <File FileName="EasySpider/UrlsManager.cs" Line="17" Column="51" />
-      <File FileName="EasySpider/DataHandler.cs" Line="30" Column="44" />
+      <File FileName="EasySpider/Program.cs" Line="37" Column="39" />
+      <File FileName="EasySpider/HTMLParser.cs" Line="87" Column="16" />
+      <File FileName="EasySpider/Spider.cs" Line="76" Column="6" />
+      <File FileName="EasySpider/HTMLDownloader.cs" Line="27" Column="38" />
+      <File FileName="EasySpider/UrlsManager.cs" Line="14" Column="21" />
+      <File FileName="EasySpider/DataHandler.cs" Line="16" Column="4" />
       <File FileName="EasySpider/EventHandler.cs" Line="7" Column="41" />
     </Files>
   </MonoDevelop.Ide.Workbench>

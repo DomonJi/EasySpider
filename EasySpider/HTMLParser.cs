@@ -20,11 +20,7 @@ namespace EasySpider
 
 		public string[] XPathSelectors{ get; set; }
 
-		public Func<string,string> ContentSelector{ get; set; }
-
-		public event LinksParsedHandler linksParsedEvent;
-
-		public event ContentFilteredHandler contentFilteredEvent;
+		public Func<string[],string[]> ContentSelector{ get; set; }
 
 		public Dictionary<string,int> Parse (string htmlContent, int depth)
 		{
@@ -48,7 +44,6 @@ namespace EasySpider
 					}
 					if (canBeAdded) {
 						string url = contentStandarlize (href);
-						string linkText = contentStandarlize (linkDescription);
 
 						if (String.IsNullOrEmpty (url) ||
 						    url.StartsWith ("#") ||
@@ -58,7 +53,7 @@ namespace EasySpider
 						}
 						url = URLSdantarlize (url);
 
-						if (URLRegexFilter != null && !IsUrlMatchRegex (url, URLRegexFilter)) {
+						if (URLRegexFilter != null && !URLRegexFilter.Any (f => Regex.IsMatch (url, f, RegexOptions.IgnoreCase))) {
 							continue;
 						}
 						if (!res.Keys.Contains (url)) {
@@ -83,22 +78,13 @@ namespace EasySpider
 				var nodesCollection = htmlDocument.DocumentNode.SelectNodes (XPathSelectors [i]);
 				if (nodesCollection != null) {
 					nodesCollection.ToList ().ForEach (allNodes [i].Add);
-					allNodes [i].ForEach (n => res [i] += ContentSelector != null ? (ContentSelector (n.InnerText) + "\n") : (n.InnerText + "\n"));
+					allNodes [i].ForEach (n => res [i] += n.InnerText + "\n");
 					res [i] = contentStandarlize (res [i]);
 				}
 			}
+			if (ContentSelector != null)
+				res = ContentSelector (res);
 			return res;
-		}
-
-		bool IsUrlMatchRegex (string url, string[] urlRegexFilter = null)
-		{
-			bool result;
-			if (urlRegexFilter != null) {
-				result = urlRegexFilter.Any (f => Regex.IsMatch (url, f, RegexOptions.IgnoreCase));
-			} else {
-				result = true;
-			}
-			return  result;
 		}
 
 		string contentStandarlize (string content)

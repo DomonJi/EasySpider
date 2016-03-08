@@ -2,13 +2,12 @@
 using System.Net;
 using System.IO;
 using System.Text;
-using HtmlAgilityPack;
 
 namespace EasySpider
 {
 	public class HTMLDownloader
 	{
-		int timeOut = 15000;
+		int timeOut = 10000;
 
 		public int TimeOut{ get { return timeOut; } set { timeOut = value; } }
 
@@ -22,33 +21,29 @@ namespace EasySpider
 
 		public bool LimitSpeed { get; set; }
 
-		public event HTMLDownLoadedHandler downloadedEvent;
-
 		public string Download (string url)
 		{
-			HttpWebRequest httpRequest = null;
-			//httpRequest.UserAgent = UserAgent;
-			HttpWebResponse httpResponse = null;
+			HttpWebRequest request = null;
+			HttpWebResponse response = null;
 			Stream dataStream;
 			string HtmlContent = "";
 			try {
-				httpRequest = WebRequest.CreateHttp (url);
-				httpResponse = httpRequest.GetResponse () as HttpWebResponse;
-				dataStream = httpResponse.GetResponseStream ();
+				request = WebRequest.CreateHttp (url);
+				response = request.GetResponse () as HttpWebResponse;
+				dataStream = response.GetResponseStream ();
 				StreamReader reader = new StreamReader (dataStream, Encoding.UTF8);
 				HtmlContent = reader.ReadToEnd ();
 				reader.Close ();
 				dataStream.Close ();
-				httpResponse.Close ();
+				response.Close ();
 				Console.WriteLine (url + " Downloaded");
-				//downloadedEvent (url, HtmlContent);
-			} catch (Exception e) {
+			} catch {
 				Console.WriteLine (url + "Failed");
 			} finally {
-				if (httpRequest != null)
-					httpRequest.Abort ();
-				if (httpResponse != null)
-					httpResponse.Close ();
+				if (request != null)
+					request.Abort ();
+				if (response != null)
+					response.Close ();
 			}
 			return HtmlContent;
 		}

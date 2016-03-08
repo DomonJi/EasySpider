@@ -7,14 +7,12 @@ namespace EasySpider
 {
 	public class Spider
 	{
-		public string RootUrl { get; set; }
-
+		string rootUrl;
 		int threadsNum = 4;
-
-		public int ThreadsNum{ get { return threadsNum; } set { threadsNum = value; } }
-
 		Thread[] threads;
 		bool[] idleThreads;
+
+		public int ThreadsNum{ get { return threadsNum; } set { threadsNum = value; } }
 
 		public UrlsManager UrlsMng{ get; set; }
 
@@ -24,42 +22,29 @@ namespace EasySpider
 
 		public DataHandler DataHdler;
 
-		public Spider (string rootUrl)
+		public Spider (string _rootUrl)
 		{
-			RootUrl = rootUrl;
-			UrlsMng = new UrlsManager ();
-			Downloader = new HTMLDownloader ();
-			Parser = new HTMLParser ();
-			DataHdler = new DataHandler ();
+			rootUrl = _rootUrl;
 		}
 
 		void Init ()
 		{
-
+			UrlsMng = UrlsMng ?? new UrlsManager ();
+			Downloader = Downloader ?? new HTMLDownloader ();
+			Parser = Parser ?? new HTMLParser ();
+			DataHdler = DataHdler ?? new DataHandler ();
 			threads = new Thread[threadsNum];
 			idleThreads = new bool[threadsNum];
-
 			for (int i = 0; i < threadsNum; i++) {
 				threads [i] = new Thread (new ParameterizedThreadStart (CrawlProc));
 			}
-
-//			Downloader.downloadedEvent += (u, h) => UrlsMng.dataBase [u].HTMLContent = h;
-//
-//			Parser.contentFilteredEvent += (u, c) => {
-//				if (UrlsMng.dataBase.ContainsKey (u))
-//					UrlsMng.dataBase [u].FilteredContent = c;
-//				else {
-//					UrlsMng.dataBase.Add (u, new URLInfo{ FilteredContent = c });
-//				}
-//				Console.WriteLine (c);
-//			};
 		}
 
 		public void Crawl ()
 		{
 			Init ();
 
-			UrlsMng.AddUrl (new KeyValuePair<string, int> (RootUrl, 0));
+			UrlsMng.AddUrl (new KeyValuePair<string, int> (rootUrl, 0));
 
 			for (int i = 0; i < threadsNum; i++) {
 				threads [i].Start (i);
@@ -70,7 +55,9 @@ namespace EasySpider
 
 		public void Stop ()
 		{
-			
+			for (int i = 0; i < ThreadsNum; i++) {
+				threads [i].Abort ();
+			}
 		}
 
 		void CrawlProc (object threadIndex)

@@ -11,11 +11,9 @@ namespace EasySpider
 	public class UrlsManager
 	{
 
-		int crawDepth = 100;
+		int crawDepth = 10;
 
 		public int CrawDepth { get { return crawDepth; } set { crawDepth = value; } }
-
-		public event NewURLAddedHandler newURLAddedEvent;
 
 		Queue<KeyValuePair<string,int>> newUrlQueue = new Queue<KeyValuePair<string,int>> ();
 		readonly List<string> visitedURLs = new List<string> ();
@@ -27,7 +25,6 @@ namespace EasySpider
 			if (string.IsNullOrEmpty (url.Key) || newUrlQueue.Any (uinfo => uinfo.Key == url.Key) || visitedURLs.Contains (url.Key) || url.Value > CrawDepth)
 				return;
 			newUrlQueue.Enqueue (url);
-//			newURLAddedEvent (url.Key, url.Value);
 		}
 
 		public void AddUrls (IEnumerable<KeyValuePair<string,int>> urls)

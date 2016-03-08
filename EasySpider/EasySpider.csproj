@@ -44,7 +44,6 @@
     <Compile Include="HTMLDownloader.cs" />
     <Compile Include="HTMLParser.cs" />
     <Compile Include="DataHandler.cs" />
-    <Compile Include="EventHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
