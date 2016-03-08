@@ -22,7 +22,7 @@ namespace EasySpider
 					URLRegexFilter = new []{ @".*?question.*?", @".*?topic.*?" },
 					EscapeWords = new []{ "编辑于", "发布于", "按时间排序", "什么是答案总结", "查看全部" },
 					URLSdantarlize = u => {
-						if (!u.StartsWith ("https://www.zhihu.com"))
+						if (!u.StartsWith ("https://www.zhihu.com") && !u.StartsWith ("http://www.zhihu.com"))
 							u = "https://www.zhihu.com" + u;
 						if (u.Contains ("answer"))
 							u = Regex.Split (u, "answer", RegexOptions.IgnoreCase) [0];
