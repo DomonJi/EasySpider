@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 
 namespace EasySpider
 {
@@ -15,7 +16,9 @@ namespace EasySpider
 
 		public KeyValuePair<int,Func<string,bool>>[] ContentFilters{ get; set; }
 
-		public Func<string[],KeyValuePair<string,string>> OutPuterNameRule{ get; set; }
+		public Func<List<string>[],KeyValuePair<string,string>> OutPuterNameRule{ get; set; }
+
+		public Action<List<string>[]> UnionFilter{ get; set; }
 
 		public void Output (Object file)
 		{
@@ -25,13 +28,26 @@ namespace EasySpider
 			sw.Close ();
 		}
 
-		public void CollectData (string url, int depth, string html, string[] content)
+		public void CollectData (string url, int depth, string html, List<string>[] content)
 		{
-			if (content.Any (c => c == null))
+			if (content.Any (c => c == null) || string.IsNullOrEmpty (url))
 				return;
 			if (URLRegexFilters != null && URLRegexFilters.All (f => !Regex.IsMatch (url, f, RegexOptions.IgnoreCase)))
 				return;
-			if (ContentFilters.Any (s => s.Value != null && content [s.Key] != null && !s.Value (content [s.Key])))
+			if (ContentFilters != null) {
+				for (int i = 0; i < ContentFilters.Length; i++) {
+					var toRemove = new List<string> ();
+					content [i].ForEach (c => {
+						if (!ContentFilters [i].Value (c))
+							toRemove.Add (c);
+					});
+					toRemove.ForEach (a => content [i].Remove (a));
+				}
+			}
+			if (UnionFilter != null) {
+				UnionFilter (content);
+			}
+			if (content.Any (c => c.Count < 1))
 				return;
 			dataBase.Add (url, new URLInfo{ Depth = depth, HTMLContent = html, SlelectedContent = content });
 			new Thread (Output).Start (OutPuterNameRule (content));
@@ -45,7 +61,7 @@ namespace EasySpider
 
 		public string HTMLContent{ get; set; }
 
-		public string[] SlelectedContent{ get; set; }
+		public List<string>[] SlelectedContent{ get; set; }
 	}
 }
 

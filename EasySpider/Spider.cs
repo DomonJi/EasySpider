@@ -88,7 +88,7 @@ namespace EasySpider
 				lock (UrlsMng)
 					parseResult.Keys.ToList ().ForEach (url => UrlsMng.AddUrl (new KeyValuePair<string, int> (url, currentUrlWithDepth.Value + 1)));
 
-				string[] filteredContent = Parser.ParseHTML (html, currentUrlWithDepth.Key);
+				var filteredContent = Parser.ParseHTML (html, currentUrlWithDepth.Key);
 
 				lock (DataHdler)
 					DataHdler.CollectData (currentUrlWithDepth.Key, currentUrlWithDepth.Value, html, filteredContent);
