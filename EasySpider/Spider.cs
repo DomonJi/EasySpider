@@ -43,7 +43,7 @@ namespace EasySpider
 		public void Crawl ()
 		{
 			Init ();
-
+			Console.WriteLine ("Spider Initialized");
 			UrlsMng.AddUrl (new KeyValuePair<string, int> (rootUrl, 0));
 
 			for (int i = 0; i < threadsNum; i++) {
@@ -64,7 +64,6 @@ namespace EasySpider
 		{
 			var currentIndex = (int)threadIndex;
 			while (true) {
-				
 				if (!UrlsMng.HasNewUrl) {
 					idleThreads [currentIndex] = true;
 					if (idleThreads.All (t => t)) {
@@ -76,22 +75,20 @@ namespace EasySpider
 				}
 				idleThreads [currentIndex] = false;
 			
-				KeyValuePair<string,int> currentUrlWithDepth = new KeyValuePair<string, int> ();
+				KeyValuePair<string,int> curntURL = new KeyValuePair<string, int> ();
 				lock (UrlsMng) {
-					if (UrlsMng.HasNewUrl) {
-						currentUrlWithDepth = UrlsMng.GetUrl ();
-					}
+					if (UrlsMng.HasNewUrl)
+						curntURL = UrlsMng.GetUrl ();
+					else
+						continue;
 				}
-				var html = Downloader.Download (currentUrlWithDepth.Key);
-				
-				var parseResult = Parser.Parse (html, currentUrlWithDepth.Value);
+				var html = Downloader.Download (curntURL.Key);
+				var parseResult = Parser.ParseURLS (html, curntURL.Value);
 				lock (UrlsMng)
-					parseResult.Keys.ToList ().ForEach (url => UrlsMng.AddUrl (new KeyValuePair<string, int> (url, currentUrlWithDepth.Value + 1)));
-
-				var filteredContent = Parser.ParseHTML (html, currentUrlWithDepth.Key);
-
+					parseResult.Keys.ToList ().ForEach (url => UrlsMng.AddUrl (new KeyValuePair<string, int> (url, curntURL.Value + 1)));
+				var filteredContent = Parser.ParseHTML (html, curntURL.Key);
 				lock (DataHdler)
-					DataHdler.CollectData (currentUrlWithDepth.Key, currentUrlWithDepth.Value, html, filteredContent);
+					DataHdler.CollectData (curntURL.Key, curntURL.Value, html, filteredContent);
 			}
 		}
 	}

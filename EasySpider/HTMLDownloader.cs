@@ -29,6 +29,9 @@ namespace EasySpider
 			string HtmlContent = "";
 			try {
 				request = WebRequest.CreateHttp (url);
+				request.UserAgent = UserAgent;
+				request.Method = "GET";
+				request.AllowAutoRedirect = true;
 				response = request.GetResponse () as HttpWebResponse;
 				dataStream = response.GetResponseStream ();
 				StreamReader reader = new StreamReader (dataStream, Encoding.UTF8);
@@ -38,7 +41,7 @@ namespace EasySpider
 				response.Close ();
 				Console.WriteLine (url + " Downloaded");
 			} catch {
-				Console.WriteLine (url + "Failed");
+				Console.WriteLine (url + " Failed");
 			} finally {
 				if (request != null)
 					request.Abort ();

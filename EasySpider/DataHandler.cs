@@ -30,14 +30,14 @@ namespace EasySpider
 
 		public void CollectData (string url, int depth, string html, List<string>[] content)
 		{
-			if (content.Any (c => c == null) || string.IsNullOrEmpty (url))
+			if (content.Any (c => c == null))
 				return;
 			if (URLRegexFilters != null && URLRegexFilters.All (f => !Regex.IsMatch (url, f, RegexOptions.IgnoreCase)))
 				return;
 			if (ContentFilters != null) {
 				for (int i = 0; i < ContentFilters.Length; i++) {
 					var toRemove = new List<string> ();
-					content [i].ForEach (c => {
+					content [ContentFilters [i].Key].ForEach (c => {
 						if (!ContentFilters [i].Value (c))
 							toRemove.Add (c);
 					});

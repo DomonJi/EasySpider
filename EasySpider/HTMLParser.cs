@@ -20,7 +20,7 @@ namespace EasySpider
 
 		public string[] XPathSelectors{ get; set; }
 
-		public Dictionary<string,int> Parse (string htmlContent, int depth)
+		public Dictionary<string,int> ParseURLS (string htmlContent, int depth)
 		{
 			Dictionary<string,string> urls = new Dictionary<string, string> ();
 			Dictionary<string,int> res = new Dictionary<string,int> ();
