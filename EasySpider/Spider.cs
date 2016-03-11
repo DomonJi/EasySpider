@@ -86,7 +86,7 @@ namespace EasySpider
 				var parseResult = Parser.ParseURLS (html, curntURL.Value);
 				lock (UrlsMng)
 					parseResult.Keys.ToList ().ForEach (url => UrlsMng.AddUrl (new KeyValuePair<string, int> (url, curntURL.Value + 1)));
-				var filteredContent = Parser.ParseHTML (html, curntURL.Key);
+				var filteredContent = Parser.ParseHTML (html);
 				lock (DataHdler)
 					DataHdler.CollectData (curntURL.Key, curntURL.Value, html, filteredContent);
 			}

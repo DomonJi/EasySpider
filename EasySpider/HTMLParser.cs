@@ -18,7 +18,7 @@ namespace EasySpider
 
 		public Func<string,string> URLSdantarlize{ get; set; }
 
-		public string[] XPathSelectors{ get; set; }
+		public Func<HtmlNode,object> ContentSelector{ get; set; }
 
 		public Dictionary<string,int> ParseURLS (string htmlContent, int depth)
 		{
@@ -64,24 +64,11 @@ namespace EasySpider
 			return res;
 		}
 
-		public List<string>[] ParseHTML (string html, string originURL)
+		public object ParseHTML (string html)
 		{
 			HtmlDocument htmlDocument = new HtmlDocument ();
 			htmlDocument.LoadHtml (html);
-			int length = XPathSelectors.Length;
-			List<string>[] res = new List<string> [length];
-			List<HtmlNode>[] allNodes = new List<HtmlNode>[length];
-			for (int i = 0; i < XPathSelectors.Length; i++) {
-				res [i] = new List<string> ();
-				allNodes [i] = new List<HtmlNode> ();
-				var nodesCollection = htmlDocument.DocumentNode.SelectNodes (XPathSelectors [i]);
-				if (nodesCollection != null) {
-					nodesCollection.ToList ().ForEach (allNodes [i].Add);
-					allNodes [i].ForEach (n => res [i].Add (n.InnerText));
-					res [i].ForEach (r => r = contentStandarlize (r));
-				}
-			}
-			return res;
+			return ContentSelector != null ? ContentSelector (htmlDocument.DocumentNode) : html;
 		}
 
 		string contentStandarlize (string content)

@@ -41,9 +41,7 @@ namespace EasySpider
 
 		public int Depth{ get; set; }
 
-		//public string HTMLContent{ get; set; }
-
-		public List<string>[] SlelectedContent{ get; set; }
+		public object SlelectedContent{ get; set; }
 	}
 }
 

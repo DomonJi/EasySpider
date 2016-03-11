@@ -1,15 +1,16 @@
 ﻿<Properties StartupItem="EasySpider/EasySpider.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="EasySpider/DataBase.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EasySpider/SpiderPrefabs.cs">
     <Files>
       <File FileName="EasySpider/Program.cs" Line="10" Column="42" />
-      <File FileName="EasySpider/HTMLParser.cs" Line="11" Column="25" />
-      <File FileName="EasySpider/Spider.cs" Line="68" Column="40" />
+      <File FileName="EasySpider/HTMLParser.cs" Line="71" Column="87" />
+      <File FileName="EasySpider/Spider.cs" Line="78" Column="74" />
       <File FileName="EasySpider/HTMLDownloader.cs" Line="38" Column="1" />
-      <File FileName="EasySpider/UrlsManager.cs" Line="49" Column="26" />
-      <File FileName="EasySpider/DataHandler.cs" Line="53" Column="16" />
-      <File FileName="EasySpider/SpiderPrefabs.cs" Line="42" Column="100" />
-      <File FileName="EasySpider/DataBase.cs" Line="26" Column="35" />
+      <File FileName="EasySpider/UrlsManager.cs" Line="17" Column="3" />
+      <File FileName="EasySpider/DataHandler.cs" Line="18" Column="129" />
+      <File FileName="EasySpider/SpiderPrefabs.cs" Line="37" Column="78" />
+      <File FileName="EasySpider/DataBase.cs" Line="19" Column="53" />
+      <File FileName="EasySpider/BloomFilter.cs" Line="2" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

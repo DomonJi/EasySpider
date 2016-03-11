@@ -52,6 +52,7 @@
     <Compile Include="DataHandler.cs" />
     <Compile Include="SpiderPrefabs.cs" />
     <Compile Include="DataBase.cs" />
+    <Compile Include="BloomFilter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
