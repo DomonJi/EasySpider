@@ -20,7 +20,7 @@ namespace EasySpider
 				URLRegexFilter = new []{ @".*?question.*?", @".*?topic.*?" },
 				EscapeWords = new []{ "编辑于", "发布于", "按时间排序", "什么是答案总结", "查看全部" },
 				URLSdantarlize = u => {
-					if (!u.StartsWith ("https://www.zhihu.com") && !u.StartsWith ("http://www.zhihu.com"))
+					if (!u.Contains ("zhihu.com"))
 						u = "https://www.zhihu.com" + u;
 					if (u.Contains ("answer"))
 						u = Regex.Split (u, "answer", RegexOptions.IgnoreCase) [0];
@@ -37,9 +37,9 @@ namespace EasySpider
 			DataHdler = new DataHandler {
 				URLRegexFilters = new []{ @".*?question.*?" },
 				ContentFilters = new KeyValuePair<int, Func<string, bool>>[] {
-					new KeyValuePair<int, Func<string, bool>> (0, s => new []{ "考研", "工作", "恋爱", "爱情", "互联网", "应用", "旅行" }.Any (s.Contains)),
+					//new KeyValuePair<int, Func<string, bool>> (0, s => new []{ "考研", "工作", "恋爱", "爱情", "互联网", "应用", "旅行" }.Any (s.Contains)),
 					new KeyValuePair<int, Func<string, bool>> (1, s => new []{ "考研", "工作", "恋爱", "爱情", "互联网", "应用", "旅行" }.Any (s.Contains)),
-					new KeyValuePair<int, Func<string, bool>> (2, s => Int32.Parse (s.Replace ("K", "000")) > 100),
+					new KeyValuePair<int, Func<string, bool>> (2, s => Int32.Parse (s.Replace ("K", "000")) > 1000),
 				},
 				UnionFilter = cla => {
 					var n1 = new List<string> ();
@@ -53,7 +53,7 @@ namespace EasySpider
 					cla [1] = n1;
 					cla [2] = n2;
 				},
-				OutPuterNameRule = new Func<List<string>[], KeyValuePair<string, string>> (
+				OutPuter = new Func<List<string>[], KeyValuePair<string, string>> (
 					s => {
 						string content = s [0] [0];
 						for (int i = 0; i < (s [1].Count > s [2].Count ? s [2].Count : s [1].Count); i++) {

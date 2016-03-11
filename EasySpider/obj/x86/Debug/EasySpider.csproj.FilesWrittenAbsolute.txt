@@ -4,3 +4,7 @@
 /Users/XmacZone/Documents/MonoProjects/EasySpider/EasySpider/obj/x86/Debug/EasySpider.exe
 /Users/XmacZone/Documents/MonoProjects/EasySpider/EasySpider/obj/x86/Debug/EasySpider.exe.mdb
 /Users/XmacZone/Documents/MonoProjects/EasySpider/EasySpider/bin/Debug/HtmlAgilityPack.dll
+/Users/XmacZone/Documents/MonoProjects/EasySpider/EasySpider/bin/Debug/MongoDB.Bson.dll
+/Users/XmacZone/Documents/MonoProjects/EasySpider/EasySpider/bin/Debug/MongoDB.Driver.dll
+/Users/XmacZone/Documents/MonoProjects/EasySpider/EasySpider/bin/Debug/MongoDB.Driver.Core.dll
+/Users/XmacZone/Documents/MonoProjects/EasySpider/EasySpider/bin/Debug/MongoDB.Driver.Core.xml

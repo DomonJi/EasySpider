@@ -35,6 +35,12 @@
       <HintPath>..\..\..\..\Downloads\HtmlAgilityPack\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\..\..\..\Downloads\CSharpDriver-2\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\..\..\..\Downloads\CSharpDriver-2\MongoDB.Driver.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -45,6 +51,7 @@
     <Compile Include="HTMLParser.cs" />
     <Compile Include="DataHandler.cs" />
     <Compile Include="SpiderPrefabs.cs" />
+    <Compile Include="DataBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

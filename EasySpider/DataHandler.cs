@@ -4,27 +4,27 @@ using System.IO;
 using System.Threading;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Runtime.InteropServices;
 
 namespace EasySpider
 {
 	public class DataHandler
 	{
-		readonly Dictionary<string,URLInfo> dataBase = new Dictionary<string, URLInfo> ();
+		readonly DataBase dataBase = new DataBase ("mongodb://127.0.0.1:27017", "Spider");
 
 		public string[] URLRegexFilters{ get; set; }
 
 		public KeyValuePair<int,Func<string,bool>>[] ContentFilters{ get; set; }
 
-		public Func<List<string>[],KeyValuePair<string,string>> OutPuterNameRule{ get; set; }
+		public Func<List<string>[],KeyValuePair<string,string>> OutPuter{ get; set; }
+
+		public int[] Matches{ get; set; }
 
 		public Action<List<string>[]> UnionFilter{ get; set; }
 
-		public void Output (Object file)
+		public async void Output (KeyValuePair<string,string> kvp)
 		{
-			KeyValuePair<string,string> kvp = (KeyValuePair<string,string>)file;
 			StreamWriter sw = new StreamWriter (kvp.Key, true, System.Text.Encoding.Unicode);
-			sw.Write (kvp.Value);
+			await sw.WriteAsync (kvp.Value);
 			sw.Close ();
 		}
 
@@ -49,19 +49,19 @@ namespace EasySpider
 			}
 			if (content.Any (c => c.Count < 1))
 				return;
-			dataBase.Add (url, new URLInfo{ Depth = depth, HTMLContent = html, SlelectedContent = content });
-			new Thread (Output).Start (OutPuterNameRule (content));
+			//dataBase.Add (url, new URLInfo{ Depth = depth,  SlelectedContent = content });
+			dataBase.Add (new URLInfo{ URL = url, Depth = depth, SlelectedContent = content });
+			Output (OutPuter (content));
 		}
-
 	}
 
-	public struct URLInfo
-	{
-		public int Depth{ get; set; }
-
-		public string HTMLContent{ get; set; }
-
-		public List<string>[] SlelectedContent{ get; set; }
-	}
+	//	public struct URLInfo
+	//	{
+	//		public int Depth{ get; set; }
+	//
+	//		public string HTMLContent{ get; set; }
+	//
+	//		public List<string>[] SlelectedContent{ get; set; }
+	//	}
 }
 
